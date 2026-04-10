@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope", sans-serif;
+  
+  --color-omw-blue: #dcf0fa;
+  --color-omw-blue-dark: #0369a1;
+  --color-omw-pink: #f9e8f0;
+  --color-omw-pink-dark: #9d174d;
+  --color-omw-black: #1a1a1a;
+  --color-omw-gray: #71717a;
+  --color-omw-bg: #fcfaf8;
+  
+  --radius-card: 32px;
+  --radius-pill: 9999px;
+}
+
+@layer base {
+  body {
+    @apply bg-omw-bg text-omw-black selection:bg-omw-blue/30 selection:text-omw-blue-dark font-sans antialiased;
+  }
+}
+
+@layer components {
+  .btn-blue {
+    @apply bg-omw-blue text-omw-blue-dark px-6 py-3 rounded-full font-sans text-sm font-medium hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2;
+  }
+  
+  .btn-pink {
+    @apply bg-omw-pink text-omw-pink-dark px-6 py-3 rounded-full font-sans text-sm font-medium hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2;
+  }
+  
+  .btn-black {
+    @apply bg-omw-black text-white px-6 py-3 rounded-full font-sans text-sm font-medium hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2;
+  }
+  
+  .card-omw {
+    @apply bg-white rounded-card border border-black/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all;
+  }
+  
+  .label-omw {
+    @apply font-sans text-sm font-medium uppercase tracking-[0.18em] text-omw-gray;
+  }
+}
+
+

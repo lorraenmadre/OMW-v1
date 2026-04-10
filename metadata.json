@@ -1,0 +1,5 @@
+{
+  "name": "OMW",
+  "description": "Miami-only route-sharing marketplace for recurring school transportation. Parents post routes, providers browse, and OMW maintains a trip ledger.",
+  "requestFramePermissions": []
+}

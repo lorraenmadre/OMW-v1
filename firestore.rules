@@ -1,0 +1,106 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Fields: uid, displayName, email, photoURL, role, createdAt
+    //
+    // Collection: routes
+    // Fields: id, school, pickupNeighborhood, timing, daysOfWeek, numStudents, 
+    //         currentMethod, painPoint, desiredOptions, budgetRange, status, 
+    //         visibility, createdBy, createdAt, miamiOnly
+    //
+    // Collection: providerProfiles
+    // Fields: userId, providerType, serviceAreas, capacity, timingWindows, 
+    //         vettingStatus, insuranceNotes, transitCompatible
+    //
+    // Collection: routes/{routeId}/interests
+    // Fields: id, routeId, userId, offerType, capacityNote, status, createdAt
+    //
+    // Collection: routes/{routeId}/ledger
+    // Fields: id, routeId, date, mode, providerId, cost, parentConfirmed, notes, reimbursementTags
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          (request.auth.token.email == "lorraen.madre@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+    function isValidUser(data) {
+      return hasOnlyAllowedFields(['uid', 'displayName', 'email', 'photoURL', 'role', 'createdAt']) &&
+             data.uid is string && data.email is string && isValidEmail(data.email) &&
+             data.role in ['parent', 'provider', 'admin'];
+    }
+
+    function isValidRoute(data) {
+      return hasOnlyAllowedFields(['id', 'school', 'pickupNeighborhood', 'timing', 'daysOfWeek', 'numStudents', 'currentMethod', 'painPoint', 'desiredOptions', 'budgetRange', 'status', 'visibility', 'createdBy', 'createdAt', 'miamiOnly']) &&
+             data.school is string && data.school.size() > 0 && data.school.size() < 100 &&
+             data.pickupNeighborhood is string && data.pickupNeighborhood.size() > 0 &&
+             data.status in ['Open', 'Forming', 'Covered', 'Waitlist', 'Paused', 'Hidden'];
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isOwner(userId) && isValidUser(request.resource.data) && (request.resource.data.role != 'admin' || isAdmin());
+      allow update: if isAuthenticated() && isOwner(userId) && isValidUser(request.resource.data) && (request.resource.data.role == resource.data.role || isAdmin());
+    }
+
+    match /routes/{routeId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidRoute(request.resource.data) && request.resource.data.createdBy == request.auth.uid;
+      allow update: if isAuthenticated() && (resource.data.createdBy == request.auth.uid || isAdmin()) && isValidRoute(request.resource.data);
+      allow delete: if isAuthenticated() && (resource.data.createdBy == request.auth.uid || isAdmin());
+
+      match /interests/{interestId} {
+        allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || get(/databases/$(database)/documents/routes/$(routeId)).data.createdBy == request.auth.uid || isAdmin());
+        allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+        allow update: if isAuthenticated() && (resource.data.userId == request.auth.uid || get(/databases/$(database)/documents/routes/$(routeId)).data.createdBy == request.auth.uid || isAdmin());
+      }
+
+      match /ledger/{entryId} {
+        allow read: if isAuthenticated() && (get(/databases/$(database)/documents/routes/$(routeId)).data.createdBy == request.auth.uid || isAdmin());
+        allow write: if isAuthenticated() && (get(/databases/$(database)/documents/routes/$(routeId)).data.createdBy == request.auth.uid || isAdmin());
+      }
+    }
+
+    match /providerProfiles/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && (isOwner(userId) || isAdmin());
+    }
+    
+    match /test/connection {
+      allow read: if true;
+    }
+  }
+}

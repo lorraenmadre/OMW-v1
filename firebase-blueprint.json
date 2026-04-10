@@ -1,0 +1,132 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Information about a parent, provider, or admin.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["parent", "provider", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Route": {
+      "title": "School Route",
+      "description": "A recurring school transportation need.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "school": { "type": "string" },
+        "pickupNeighborhood": { "type": "string" },
+        "timing": { "type": "string", "enum": ["morning", "afternoon", "both"] },
+        "daysOfWeek": { "type": "array", "items": { "type": "string" } },
+        "numStudents": { "type": "integer" },
+        "currentMethod": { "type": "string" },
+        "painPoint": { "type": "string" },
+        "desiredOptions": { "type": "array", "items": { "type": "string" } },
+        "budgetRange": { "type": "string" },
+        "status": { "type": "string", "enum": ["Open", "Forming", "Covered", "Waitlist", "Paused", "Hidden"] },
+        "visibility": { "type": "string", "enum": ["Public", "Moderated", "Private"] },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "miamiOnly": { "type": "boolean" },
+        "activityType": { "type": "string", "enum": ["school", "extracurricular"] },
+        "carSeatRequired": { "type": "boolean" },
+        "specialNeeds": { "type": "boolean" },
+        "requirementsNote": { "type": "string" }
+      },
+      "required": ["school", "pickupNeighborhood", "timing", "createdBy", "status", "activityType"]
+    },
+    "WaitlistRequest": {
+      "title": "Expansion Waitlist",
+      "description": "Request for OMW in other counties.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "county": { "type": "string", "enum": ["West Palm", "Broward", "Other"] },
+        "note": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "county"]
+    },
+    "ProviderProfile": {
+      "title": "Provider Profile",
+      "description": "Detailed information for transportation providers.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "providerType": { "type": "string", "enum": ["private_bus", "independent_driver", "carpool_parent"] },
+        "serviceAreas": { "type": "array", "items": { "type": "string" } },
+        "capacity": { "type": "integer" },
+        "timingWindows": { "type": "array", "items": { "type": "string" } },
+        "vettingStatus": { "type": "string", "enum": ["pending", "vetted", "rejected"] },
+        "insuranceNotes": { "type": "string" },
+        "transitCompatible": { "type": "boolean" }
+      },
+      "required": ["userId", "providerType", "vettingStatus"]
+    },
+    "RouteInterest": {
+      "title": "Route Interest/Offer",
+      "description": "An expression of interest or an offer for a route.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "routeId": { "type": "string" },
+        "userId": { "type": "string" },
+        "offerType": { "type": "string" },
+        "capacityNote": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Reviewed", "Activated", "Declined"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["routeId", "userId", "status"]
+    },
+    "LedgerEntry": {
+      "title": "Ledger Entry",
+      "description": "A record of a trip or cost for accountability.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "routeId": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "mode": { "type": "string" },
+        "providerId": { "type": "string" },
+        "cost": { "type": "number" },
+        "parentConfirmed": { "type": "boolean" },
+        "notes": { "type": "string" },
+        "reimbursementTags": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["routeId", "date", "mode", "cost"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles."
+    },
+    "/routes/{routeId}": {
+      "schema": "Route",
+      "description": "School commute routes."
+    },
+    "/providerProfiles/{userId}": {
+      "schema": "ProviderProfile",
+      "description": "Provider details."
+    },
+    "/routes/{routeId}/interests/{interestId}": {
+      "schema": "RouteInterest",
+      "description": "Interests for a route."
+    },
+    "/routes/{routeId}/ledger/{entryId}": {
+      "schema": "LedgerEntry",
+      "description": "Ledger entries for a route."
+    },
+    "/waitlist/{requestId}": {
+      "schema": "WaitlistRequest",
+      "description": "Expansion requests."
+    }
+  }
+}
