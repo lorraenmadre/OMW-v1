@@ -278,7 +278,7 @@ const Landing: React.FC = () => {
                 Text Lisey <MessageCircle className="w-4 h-4" />
               </a>
             </div>
-            <div className="flex justify-center md:justify-end">
+            <div className="flex flex-col gap-4 justify-center md:justify-end">
               <div className="bg-white rounded-[20px] border border-black/8 overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.06)] max-w-[280px] w-full">
                 <img
                   src="/assets/lisey.png"
@@ -286,8 +286,36 @@ const Landing: React.FC = () => {
                   className="w-full h-auto block"
                 />
               </div>
+
+              {/* Keyframe photo strip */}
+              <div className="grid grid-cols-2 gap-3 mt-4 max-w-[280px] w-full">
+                <img src="/assets/lisey-street.png" alt="Lisey on Ocean Drive" className="w-full rounded-2xl object-cover aspect-video" />
+                <img src="/assets/lisey-walking.png" alt="Lisey walking Miami" className="w-full rounded-2xl object-cover aspect-video" />
+              </div>
+
+              {/* Looped video */}
+              <div className="mt-6 max-w-[280px] w-full">
+                <p className="text-sm font-medium text-[#525252] mb-3">Watch Lisey in action</p>
+                <video
+                  src="/assets/lisey-loop.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full rounded-2xl"
+                />
+              </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ─── MIAMI SKYLINE ─────────────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative w-full my-8 rounded-2xl overflow-hidden">
+          <img src="/assets/miami-skyline-pink.png" alt="Miami skyline" className="w-full object-cover" style={{maxHeight: '280px'}} />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          <p className="absolute bottom-4 left-4 text-white font-semibold text-lg">Miami, FL</p>
         </div>
       </section>
 
