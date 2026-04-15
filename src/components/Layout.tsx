@@ -27,9 +27,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
-            <Link to="/" className="flex flex-col">
-              <span className="text-xl font-bold tracking-tighter text-omw-black font-sans leading-none">OMW</span>
-              <span className="text-[10px] font-medium text-omw-gray uppercase tracking-widest">Miami</span>
+            <Link to="/" className="flex items-center gap-2">
+              <img src="/assets/logo-icon.png" alt="OMW" className="w-8 h-8 object-contain" />
+              <div className="flex flex-col">
+                <span className="text-xl font-bold tracking-tighter text-omw-black font-sans leading-none">OMW</span>
+                <span className="text-[10px] font-medium text-omw-gray uppercase tracking-widest">Family Club</span>
+              </div>
             </Link>
 
             <div className="flex items-center gap-4">
@@ -95,7 +98,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             
             <div className="text-center md:text-right space-y-2">
               <p className="font-sans text-xs italic font-normal">“Public Works WORKS when the Public works.”</p>
-              <p className="font-sans text-[10px] uppercase tracking-[0.18em] opacity-30 font-medium">© 2026 OMW Miami. Civic Elegance.</p>
+              <p className="font-sans text-[10px] uppercase tracking-[0.18em] opacity-30 font-medium">© 2026 OMW.life · Family Travel Club · Miami, FL</p>
             </div>
           </div>
         </div>

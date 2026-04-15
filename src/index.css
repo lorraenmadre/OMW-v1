@@ -4,16 +4,18 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Manrope", sans-serif;
-  
-  --color-omw-blue: #dcf0fa;
-  --color-omw-blue-dark: #0369a1;
-  --color-omw-pink: #f9e8f0;
+
+  /* OMW Brand Colors — updated April 2026 */
+  --color-omw-blue: #74D4FF;
+  --color-omw-blue-dark: #0077aa;
+  --color-omw-pink: #FCCFE8;
   --color-omw-pink-dark: #9d174d;
-  --color-omw-black: #1a1a1a;
-  --color-omw-gray: #71717a;
-  --color-omw-bg: #fcfaf8;
-  
-  --radius-card: 32px;
+  --color-omw-black: #0A0A0A;
+  --color-omw-gray: #525252;
+  --color-omw-bg: #F7F6F4;
+  --color-omw-border: #E5E1DB;
+
+  --radius-card: 20px;
   --radius-pill: 9999px;
 }
 
@@ -25,24 +27,22 @@
 
 @layer components {
   .btn-blue {
-    @apply bg-omw-blue text-omw-blue-dark px-6 py-3 rounded-full font-sans text-sm font-medium hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2;
+    @apply bg-omw-blue text-omw-black px-6 py-3 rounded-full font-sans text-sm font-semibold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2;
   }
-  
+
   .btn-pink {
-    @apply bg-omw-pink text-omw-pink-dark px-6 py-3 rounded-full font-sans text-sm font-medium hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2;
+    @apply bg-omw-pink text-omw-black px-6 py-3 rounded-full font-sans text-sm font-semibold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2;
   }
-  
+
   .btn-black {
-    @apply bg-omw-black text-white px-6 py-3 rounded-full font-sans text-sm font-medium hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2;
+    @apply bg-omw-black text-white px-6 py-3 rounded-full font-sans text-sm font-semibold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2;
   }
-  
+
   .card-omw {
-    @apply bg-white rounded-card border border-black/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all;
+    @apply bg-white rounded-card border border-omw-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all;
   }
-  
+
   .label-omw {
-    @apply font-sans text-sm font-medium uppercase tracking-[0.18em] text-omw-gray;
+    @apply font-sans text-xs font-bold uppercase tracking-[0.18em] text-omw-gray;
   }
 }
-
-
